@@ -23,7 +23,8 @@ If no file is passed it will read from `stdin`.
 cd build
 make doc
 ```
-The documentation can be found under `build/doc`.
+The documentation can be found under `build/doc`.  
+The last version documentation can be consulted at [dpdmancul.gitlab.io/tiny-assembly-interpreter](https://dpdmancul.gitlab.io/tiny-assembly-interpreter)
 
 ## Test
 ```
