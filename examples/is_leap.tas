@@ -1,0 +1,50 @@
+; Says if the specified year is leap or none.
+.data
+  s1: newS "Insert the year (negative to close): "
+  sl: newS " is"
+  sn: newS " not"
+  s3: newS " a leap year.\n"
+
+  year: newH
+
+.text
+  begin:
+    putS s1 ; "Insert the year (negative to close): "
+    getH year
+
+    loadH year
+    jne end ; jump if year < 0
+
+    putH year
+    putS sl
+
+    div 4
+    mul 4
+    subH year
+    jze check_100 ; jump if year % 4 == 0
+    jmp not_leap
+
+  check_100:
+    loadH year
+    div 100
+    mul 100
+    subH year
+    jze check_400 ; jump if year % 100 == 0
+    jmp leap
+
+  check_400:
+    loadH year
+    div 400
+    mul 400
+    subH year
+    jze leap ; jump if year % 400 == 0
+
+  not_leap:
+    putS sn
+  leap:
+    putS s3
+
+    jmp begin
+
+  end:
+    alt

@@ -1,0 +1,51 @@
+; Change the letter case of the string in input
+.data
+  req: newS "Insert the string to convert: "
+  chr: newC
+  nl: newC '\n'
+
+.text
+    putS req ; "Insert the string to convert: "
+
+  next_char:
+    getC chr
+
+    loadB chr
+    sub -1
+    jze end ; jump if s[c] == EOF
+
+    loadB chr
+    sub '\n'
+    jze end ; jump if s[c] == '\n'
+
+  ; check_upper_case
+    loadB chr
+    sub 'A'
+    jne print ; jump if chr < 'A'
+    loadB chr
+    sub 'Z'
+    jpo check_lower_case ; jump if chr > 'Z'
+    loadB chr
+    add 32
+    storeB chr ; chr += 32 ('a' - 'A' = 32)
+    jmp print
+
+  check_lower_case:
+    loadB chr
+    sub 'a'
+    jne print ; jump if chr < 'a'
+    loadB chr
+    sub 'z'
+    jpo print ; jump if chr > 'z'
+    loadB chr
+    sub 32
+    storeB chr ; chr -= 32 ('a' - 'A' = 32)
+
+  print:
+    putC chr
+
+    jmp next_char
+
+  end:
+    putC nl
+    alt

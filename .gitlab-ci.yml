@@ -1,0 +1,46 @@
+.cmake: &cmake
+  image: rikorose/gcc-cmake
+  before_script:
+    - apt-get update --yes
+    - apt-get install --yes doxygen
+    - apt-get install --yes valgrind
+
+make:
+  stage: build
+  <<: *cmake
+  script:
+    - ./configure
+    - cd build
+    - make all
+    - make doc
+  artifacts:
+    expose_as: build
+    paths: [build]
+
+test_and_memcheck:
+  stage: test
+  <<: *cmake
+  script:
+    - cd build
+    - make test_memcheck
+    - if [ -s "Testing/Temporary/MemoryChecker.1.log" ]; then exit 1; else exit 0; fi
+
+pages:
+  stage: deploy
+  dependencies: [make]
+  script:
+    - mv build/doc/html/ public/
+  artifacts:
+    paths: [public]
+  only: [tags]
+
+latex_doc:
+  stage: deploy
+  dependencies: [make]
+  image: aergus/latex
+  script:
+    - cd build/doc/latex
+    - make pdf
+    - mv *.pdf ../../../
+  artifacts:
+    paths: ['*.pdf']

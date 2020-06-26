@@ -1,0 +1,69 @@
+; Calculate the n-th number of Fibonacci
+.data
+  req: newS "Insert the number n (negative number to end): "
+  res: newS "The required Fibonacci number is: "
+
+  n: newB
+  a: newL 0
+  b: newL 1
+  t: newL ; temp
+
+.text
+  begin:
+    putS req ; "Insert the number n (negative number to end): "
+    getB n
+    loadB n
+
+    jne end
+
+    sub 92
+    jpo begin ; jump if n > 92 to avoid overflow
+
+    putS res ; "The required Fibonacci number is: "
+
+  ; base cases
+    loadB n
+    jze fib0 ; jump if n == 0
+    sub 1
+    jze fib1 ; jump if n == 1
+
+    storeB n ; starts from n-1
+
+  iter:
+    loadL a
+    addL b
+    storeL t ; t = a+b
+    loadL b
+    storeL a ; a = b
+    loadL t
+    storeL b ; b = t
+    loadB n
+    sub 1
+    storeB n ; --n
+    jpo iter ; jump if n > 0
+
+    putL b
+    putC '\n'
+
+    load 0
+    storeL a
+    load 1
+    storeL b
+
+    jmp begin
+
+  fib0:
+    put 0
+    putC '\n'
+
+    jmp begin
+
+  fib1:
+    put 1
+    putC '\n'
+
+    jmp begin
+
+  end:
+    alt
+

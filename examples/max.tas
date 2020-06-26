@@ -1,0 +1,25 @@
+; Reads two numbers and prints the greater
+.data
+  s1: newS "Insert the first number: "
+  s2: newS "Insert the second number: "
+  sr: newS "The greater number is: "
+
+  n1: newW
+  n2: newW
+
+.text
+    putS s1 ; "Insert the first number: "
+    getW n1
+    putS s2 ; "Insert the second number: "
+    getW n2
+    putS sr ; "The greater number is: "
+    loadW n1
+    subW n2
+    jne view2 ; jump if n1 < n2
+    putW n1
+    putC '\n'
+    alt
+  view2:
+    putW n2
+    putC '\n'
+    alt
